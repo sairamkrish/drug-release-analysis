@@ -20,7 +20,7 @@ pyenv local 3.12.3  # Activate Python
 eval "$(pyenv init --path)"
 ``` -->
 
-## Getting started
+## Getting started - running with docker
 
 ```sh
 # build and run the docker container
@@ -31,6 +31,18 @@ docker compose up
 #   -t drug-release-analysis:local .
 # docker run -p 8501:8501 drug-release-analysis:local
 
-# poetry install
-# python -m streamlit run app.py
+```
+
+## Git commands
+
+```sh
+git push origin main
+
+```
+
+## Advanced usage - running python from local
+
+```sh
+poetry install
+python -m streamlit run drug_release_analysis/streamlit_app.py
 ```
