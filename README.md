@@ -24,7 +24,7 @@ eval "$(pyenv init --path)"
 
 ```sh
 # build and run the docker container
-docker compose up
+docker compose up --build
 
 # Build docker image
 # docker build \
@@ -36,6 +36,12 @@ docker compose up
 ## Git commands
 
 ```sh
+# To get code changes from remote
+git pull --rebase
+
+# To push code changes to remote
+git add .
+git commit -m "commit message"
 git push origin main
 
 ```
