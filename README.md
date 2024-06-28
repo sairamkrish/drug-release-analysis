@@ -52,3 +52,20 @@ git push origin main
 poetry install
 python -m streamlit run drug_release_analysis/streamlit_app.py
 ```
+
+## Todo
+
+- https://plotly.com/python/linear-fits/
+  - This has trendline calculation
+- Standard Curve
+  - Scatter Plot
+    - Add trendline
+    - Show equation
+    - Show R^2
+- Cumulative Release
+  - Scatter Plot
+    - Time in hours on x-axis
+    - percentage cumulative release on y-axis
+    - Add trendline
+    - Show equation
+    - Show R^2
