@@ -21,9 +21,11 @@ def render_app():
 
     st.subheader("Observation data")
     observation = handle_absorbance_observation()
+    observation.set_concentration(concentration)
+    observation.transform()
 
     # # TODO: Precision is not being displayed correctly. But dataframe has the correct precision.
-    st.dataframe(observation.get_metrix(), hide_index=True)
+    st.dataframe(observation.get_metrix(), hide_index=True, use_container_width=True)
 
 
 def handle_concentration():

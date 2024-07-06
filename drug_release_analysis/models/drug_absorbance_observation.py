@@ -1,6 +1,7 @@
 from decimal import Decimal
 from numpy import double
 import pandas as pd
+from drug_release_analysis.models.drug_concentration import DrugConcentration
 from drug_release_analysis.utils.string_helpers import lowercase
 
 from pandas._typing import ReadCsvBuffer, CompressionOptions
@@ -10,14 +11,17 @@ from pandas import DataFrame
 class DrugAbsorbanceObservation:
     original_data: DataFrame
     transformed_data: DataFrame
+    concentration: DrugConcentration
 
     def __init__(self, file_url: ReadCsvBuffer | str, nrows=1000, compression: CompressionOptions = None) -> None:
         self.original_data = pd.read_csv(file_url, nrows=nrows, compression=compression)
-        self.transform()
+
+    def set_concentration(self, concentration: DrugConcentration):
+        self.concentration = concentration
 
     def transform(self):
         data = self.original_data.rename(lowercase, axis="columns")
-        calculate_x_ug_per_ml(data)
+        self.calculate_x_ug_per_ml(data)
         data["drug_release_ug_per_ml"] = data["x_ug_per_ml"] * data["dilution_factor"]
         data["x100_ml_media"] = data["drug_release_ug_per_ml"] * 100
         data["per_pull_x5_ml"] = data["drug_release_ug_per_ml"] * 5
@@ -34,6 +38,7 @@ class DrugAbsorbanceObservation:
     def get_metrix(self):
         return self.transformed_data
 
-
-def calculate_x_ug_per_ml(data):
-    data["x_ug_per_ml"] = ((data["absorbance"].astype(double) - 0.0015) / 0.0367).astype(double)
+    def calculate_x_ug_per_ml(self, data):
+        data["x_ug_per_ml"] = (
+            (data["absorbance"].astype(double) - self.concentration.coef_const) / self.concentration.coef_x1
+        ).astype(double)
