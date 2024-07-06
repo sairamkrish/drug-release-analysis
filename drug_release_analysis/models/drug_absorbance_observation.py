@@ -21,6 +21,8 @@ class DrugAbsorbanceObservation:
 
     def transform(self):
         data = self.original_data.rename(lowercase, axis="columns")
+        data = data.groupby(["group_name", "time_in_hours", "dilution_factor"])[["absorbance"]].mean().reset_index()
+        data.sort_values(by=["group_name", "time_in_hours"], inplace=True)
         self.calculate_x_ug_per_ml(data)
         data["drug_release_ug_per_ml"] = data["x_ug_per_ml"] * data["dilution_factor"]
         data["x100_ml_media"] = data["drug_release_ug_per_ml"] * 100
