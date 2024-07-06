@@ -12,15 +12,17 @@ SAMPLE_CONCENTRATION_DATA_URL = "datasets/simple_dataset_1/concentration_data.cs
 def render_app():
     st.set_page_config(layout="wide")
     st.title("Drug Release Analysis App")
+    st.subheader("Concentration data")
     concentration = handle_concentration()
-    st.subheader("Concentration data with computation")
     st.dataframe(concentration.get_metrix(), hide_index=True)
+    concentration_fig, concentration_summary = concentration.get_trendline()
+    st.plotly_chart(concentration_fig, use_container_width=True)
+    st.write(concentration_summary)
 
+    st.subheader("Observation data")
     observation = handle_absorbance_observation()
-    st.subheader("Observation data with computation")
 
-    # TODO: Precision is not being displayed correctly. But dataframe has the correct precision.
-    # st.dataframe(data, hide_index=True, width=1000, height=500)
+    # # TODO: Precision is not being displayed correctly. But dataframe has the correct precision.
     st.dataframe(observation.get_metrix(), hide_index=True)
 
 
