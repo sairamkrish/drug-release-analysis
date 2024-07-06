@@ -55,6 +55,12 @@ python -m streamlit run drug_release_analysis/streamlit_app.py
 
 ## Todo
 
+Capability
+
+- Make file import flow
+- Bring in plotly scatter plot with trendline calculation
+- Input field capability
+
 - https://plotly.com/python/linear-fits/
   - This has trendline calculation
 - Standard Curve
@@ -69,3 +75,4 @@ python -m streamlit run drug_release_analysis/streamlit_app.py
     - Add trendline
     - Show equation
     - Show R^2
+- Deploying this app to streamlit
