@@ -14,10 +14,14 @@ def render_app():
     st.title("Drug Release Analysis App")
     st.subheader("Concentration data")
     concentration = handle_concentration()
-    st.dataframe(concentration.get_metrix(), hide_index=True)
+    col1, col2, col3 = st.columns([0.2, 0.3, 0.5])
+    with col1:
+        st.dataframe(concentration.get_metrix(), hide_index=True)
     concentration_fig, concentration_summary = concentration.get_trendline()
-    st.plotly_chart(concentration_fig, use_container_width=True)
-    st.write(concentration_summary)
+    with col2:
+        st.plotly_chart(concentration_fig, use_container_width=True)
+    with col3:
+        st.text(concentration_summary)
 
     st.subheader("Observation data")
     observation = handle_absorbance_observation()

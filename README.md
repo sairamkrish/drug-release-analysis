@@ -57,8 +57,7 @@ python -m streamlit run drug_release_analysis/streamlit_app.py
 
 Capability
 
-- Make file import flow
-- Bring in plotly scatter plot with trendline calculation
+- Pandas Group by and Avg
 - Input field capability
 
 - https://plotly.com/python/linear-fits/
