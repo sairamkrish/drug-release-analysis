@@ -9,15 +9,15 @@ from pandas import DataFrame
 
 
 class DrugAbsorbanceObservation:
-    observation_original_data: DataFrame
-    observation_transformed_data: DataFrame
+    original_data: DataFrame
+    transformed_data: DataFrame
 
     def __init__(self, file_url: ReadCsvBuffer | str, nrows=1000, compression: CompressionOptions = None) -> None:
-        self.observation_original_data = pd.read_csv(file_url, nrows=nrows, compression=compression)
+        self.original_data = pd.read_csv(file_url, nrows=nrows, compression=compression)
         self.transform()
 
     def transform(self):
-        data = self.observation_original_data.rename(lowercase, axis="columns")
+        data = self.original_data.rename(lowercase, axis="columns")
         calculate_x_ug_per_ml(data)
         data["drug_release_ug_per_ml"] = data["x_ug_per_ml"] * data["dilution_factor"]
         data["x100_ml_media"] = data["drug_release_ug_per_ml"] * 100
@@ -30,10 +30,10 @@ class DrugAbsorbanceObservation:
             )
 
         data["cumulative_drug_release"] = data["total_drug_release"].cumsum()
-        self.observation_transformed_data = data
+        self.transformed_data = data
 
     def get_metrix(self):
-        return self.observation_transformed_data
+        return self.transformed_data
 
 
 def calculate_x_ug_per_ml(data):
