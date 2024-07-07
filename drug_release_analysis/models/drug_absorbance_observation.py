@@ -1,23 +1,20 @@
 from decimal import Decimal
 from numpy import double
 import pandas as pd
-from drug_release_analysis.models.drug_concentration import DrugConcentration
 from drug_release_analysis.utils.string_helpers import lowercase
 
 from pandas._typing import ReadCsvBuffer, CompressionOptions
 from pandas import DataFrame
+from pandas.util import hash_pandas_object
+import streamlit as st
 
 
 class DrugAbsorbanceObservation:
     original_data: DataFrame
     transformed_data: DataFrame
-    concentration: DrugConcentration
 
     def __init__(self, file_url: ReadCsvBuffer | str, nrows=1000, compression: CompressionOptions = None) -> None:
         self.original_data = pd.read_csv(file_url, nrows=nrows, compression=compression)
-
-    def set_concentration(self, concentration: DrugConcentration):
-        self.concentration = concentration
 
     def transform(self):
         data = self.original_data.rename(lowercase, axis="columns")
@@ -37,10 +34,19 @@ class DrugAbsorbanceObservation:
         data["cumulative_drug_release"] = data["total_drug_release"].cumsum()
         self.transformed_data = data
 
-    def get_metrix(self):
-        return self.transformed_data
-
     def calculate_x_ug_per_ml(self, data):
+        concentration = st.session_state.concentration
         data["x_ug_per_ml"] = (
-            (data["absorbance"].astype(double) - self.concentration.coef_const) / self.concentration.coef_x1
+            (data["absorbance"].astype(double) - concentration.coef_const) / concentration.coef_x1
         ).astype(double)
+
+    # def __key(self):
+    #     return hash_pandas_object(self.original_data)
+
+    # def __hash__(self):
+    #     return self.__key()
+
+    # def __eq__(self, other):
+    #     if isinstance(other, DrugAbsorbanceObservation):
+    #         return self.__key() == other.__key()
+    #     return NotImplemented

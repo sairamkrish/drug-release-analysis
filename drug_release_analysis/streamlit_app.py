@@ -2,70 +2,26 @@ import streamlit as st
 import pandas as pd
 from drug_release_analysis.models.drug_absorbance_observation import DrugAbsorbanceObservation
 from drug_release_analysis.models.drug_concentration import DrugConcentration
+from drug_release_analysis.pages.input.data import input_page_run
+from drug_release_analysis.pages.generated_results.concentration import concentration_page_run
+from drug_release_analysis.pages.generated_results.observation import observation_page_run
 
 pd.set_option("display.precision", 8)
-
-SAMPLE_OBSERVATION_DATA_URL = "datasets/simple_dataset_1/observation_data.csv"
-SAMPLE_CONCENTRATION_DATA_URL = "datasets/simple_dataset_1/concentration_data.csv"
 
 
 def render_app():
     st.set_page_config(layout="wide")
     st.title("Drug Release Analysis App")
-    st.subheader("Concentration data")
-    concentration = handle_concentration()
-    col1, col2, col3 = st.columns([0.2, 0.3, 0.5])
-    with col1:
-        st.dataframe(concentration.get_metrix(), hide_index=True)
-    concentration_fig, concentration_summary = concentration.get_trendline()
-    with col2:
-        st.plotly_chart(concentration_fig, use_container_width=True)
-    with col3:
-        st.text(concentration_summary)
-
-    st.subheader("Observation data")
-    observation = handle_absorbance_observation()
-    observation.set_concentration(concentration)
-    observation.transform()
-
-    # # TODO: Precision is not being displayed correctly. But dataframe has the correct precision.
-    st.dataframe(observation.get_metrix(), hide_index=True, use_container_width=True)
-
-
-def handle_concentration():
-    upload_msg = "Choose a drug concentration data (csv or csv compressed as zip)"
-    sample_file_url = SAMPLE_CONCENTRATION_DATA_URL
-    model = DrugConcentration
-
-    return create_model_from_file_upload(upload_msg, model, sample_file_url)
-
-
-def handle_absorbance_observation():
-    upload_msg = "Choose a time based absorbance data (csv or csv compressed as zip)"
-    sample_file_url = SAMPLE_OBSERVATION_DATA_URL
-    model = DrugAbsorbanceObservation
-
-    return create_model_from_file_upload(upload_msg, model, sample_file_url)
-
-
-def create_model_from_file_upload(upload_msg, model, sample_file_url):
-    file_compression = None
-    file_url = sample_file_url
-    uploaded_file = st.file_uploader(upload_msg, type=["csv", "zip"])
-    if uploaded_file is not None:
-        file_url = uploaded_file
-        if uploaded_file.type == "application/zip":
-            file_compression = "zip"
-    else:
-        st.text("No file uploaded yet. Using sample data...")
-    data_load_state = st.text("Loading data...")
-    observation = model(
-        file_url=file_url,
-        nrows=10000,
-        compression=file_compression,
+    input_page = st.Page(input_page_run, title="Input Data", icon=":material/edit:", default=True)
+    concentration_page = st.Page(concentration_page_run, title="Concentration", icon=":material/edit:")
+    observation_page = st.Page(observation_page_run, title="Observation", icon=":material/edit:")
+    pg = st.navigation(
+        {
+            "Input": [input_page],
+            "Generated Results": [concentration_page, observation_page],
+        }
     )
-    data_load_state.text("Data loaded!")
-    return observation
+    pg.run()
 
 
 if __name__ == "__main__":
