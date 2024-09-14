@@ -1,24 +1,16 @@
 # drug-release-analysis
 
-Drug release analysis based on different statistical metrics
+Drug release analysis based on different statistical metrics.
+This app is deployed to Streamlit cloud - https://drug-release.streamlit.app/.
+
+## Community guidelines
+
+Feel free to clone this repo and use it for your own analysis.
+If you like to contribute, please raise a PR. If you have a feature request, please raise an issue with more details.
 
 ### Pre-requisites
 
 - Docker
-<!-- - Python version - `v3.12+`
-- [pyenv](https://github.com/pyenv/pyenv) - Simple Python version management
-  - Only needed if you have multiple versions of python and want to have a better developer experience.
-- [Poetry](https://python-poetry.org) - For python dependency management -->
-
-<!-- ## First time setup
-
-```sh
-pyenv update # if --list doesn't have updated python versions
-pyenv install --list # list available versions that can be installed
-pyenv install 3.12.3 # only needed for installing this python
-pyenv local 3.12.3  # Activate Python
-eval "$(pyenv init --path)"
-``` -->
 
 ## Getting started - running with docker
 
@@ -36,6 +28,8 @@ docker compose up --build
 ## Git commands
 
 ```sh
+# To revert all local changes
+git restore .
 # To get code changes from remote
 git pull --rebase
 
@@ -48,9 +42,31 @@ git push origin main
 
 ## Advanced usage - running python from local
 
+This is not required. Optional if you want to run the app locally using python & not docker.
+
+- Python version - `v3.12+`
+- [pyenv](https://github.com/pyenv/pyenv) - Simple Python version management
+  - Only needed if you have multiple versions of python and want to have a better developer experience.
+- [Poetry](https://python-poetry.org) - For python dependency management
+
+## First time setup
+
 ```sh
+pyenv update # if --list doesn't have updated python versions
+pyenv install --list # list available versions that can be installed
+pyenv install 3.12.3 # only needed for installing this python
+pyenv local 3.12.3  # Activate Python
+```
+
+### Development flow
+
+```sh
+eval "$(pyenv init --path)"
+# install dependencies
 poetry install
+poetry shell
 python -m streamlit run drug_release_analysis/streamlit_app.py
+
 ```
 
 ## Todo

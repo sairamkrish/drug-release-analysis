@@ -7,9 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-streamlit = "^1.36.0"
 plotly = "^5.22.0"
 statsmodels = "^0.14.2"
+streamlit = "^1.38.0"
 
 
 [tool.poetry.group.dev.dependencies]

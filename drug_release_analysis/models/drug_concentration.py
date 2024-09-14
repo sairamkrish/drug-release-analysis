@@ -8,6 +8,7 @@ import plotly.graph_objs as go
 from statsmodels.iolib.summary import Summary
 from pandas.util import hash_pandas_object
 import hashlib
+import streamlit as st
 
 
 class DrugConcentration:
@@ -18,8 +19,15 @@ class DrugConcentration:
     trendline_fig: go.Figure
     trendline_summary: Summary
 
-    def __init__(self, file_url: ReadCsvBuffer | str, nrows=1000, compression: CompressionOptions = None) -> None:
-        self.original_data = pd.read_csv(file_url, nrows=nrows, compression=compression)
+    def __init__(
+        self,
+        file_url: ReadCsvBuffer | str,
+        nrows=1000,
+        compression: CompressionOptions = None,
+    ) -> None:
+        self.original_data = pd.read_csv(
+            file_url, nrows=nrows, compression=compression
+        )
         self.transform()
         self.init_trendline()
 
