@@ -20,14 +20,21 @@ def observation_page_run():
             hide_index=True,
             use_container_width=True,
         )
+
+        col1, _ = st.columns([0.2, 0.8], vertical_alignment="bottom")
+
+        with col1:
+            st.plotly_chart(
+                observation.cumulative_percentage_trendline_fig,
+                use_container_width=True,
+            )
+
     else:
         st.markdown("`No observation data found`")
 
 
 def add_observation_action_buttons():
-    col1, col2, col3, _ = st.columns(
-        [0.1, 0.11, 0.1, 0.7], vertical_alignment="bottom"
-    )
+    col1, _ = st.columns([0.1, 0.9], vertical_alignment="bottom")
     with col1:
         if st.button("Upload observation file"):
             popup_upload_observation_file()

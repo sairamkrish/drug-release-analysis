@@ -7,6 +7,9 @@ from pandas._typing import ReadCsvBuffer, CompressionOptions
 from pandas import DataFrame
 from pandas.util import hash_pandas_object
 import streamlit as st
+import plotly.express as px
+import plotly.graph_objs as go
+from statsmodels.iolib.summary import Summary
 
 
 class DrugAbsorbanceObservation:
@@ -53,6 +56,21 @@ class DrugAbsorbanceObservation:
             data["cumulative_drug_release"] * 100
         ) / (st.session_state.concentration_actual_load * 1000)
         self.transformed_data = data
+        self.init_trendline()
+
+    def init_trendline(self):
+        fig = px.scatter(
+            self.transformed_data,
+            x="time_in_hours",
+            y="cumulative_percentage",
+            trendline="ols",
+        )
+        results = px.get_trendline_results(fig)
+        regression_results = results.px_fit_results.iloc[0]
+        self.coef_const, self.coef_x1 = regression_results.params
+        summary = regression_results.summary()
+        self.cumulative_percentage_trendline_fig = fig
+        self.cumulative_percentage_trendline_summary = summary
 
     def calculate_x_ug_per_ml(self, data):
         concentration = st.session_state.concentration

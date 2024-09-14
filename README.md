@@ -73,9 +73,6 @@ python -m streamlit run drug_release_analysis/streamlit_app.py
 
 Capability
 
-- Pandas Group by and Avg
-- Input field capability
-
 - https://plotly.com/python/linear-fits/
   - This has trendline calculation
 - Standard Curve
@@ -90,4 +87,3 @@ Capability
     - Add trendline
     - Show equation
     - Show R^2
-- Deploying this app to streamlit
