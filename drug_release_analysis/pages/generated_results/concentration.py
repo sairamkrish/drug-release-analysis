@@ -43,8 +43,13 @@ def add_concentration_action_buttons():
 
 @st.dialog("Concentration trendline summary", width="large")
 def popup_concentration_trendline_summary():
-    concentration: DrugConcentration = st.session_state.concentration
-    st.text(concentration.trendline_summary)
+    if st.session_state.get("concentration"):
+        concentration: DrugConcentration = st.session_state.concentration
+        st.text(concentration.trendline_summary)
+    else:
+        st.markdown(
+            "`No concentration data found. Trendlyne summary is based on concentration data`"
+        )
 
 
 def show_concentration_settings():
