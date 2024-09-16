@@ -73,17 +73,21 @@ python -m streamlit run drug_release_analysis/streamlit_app.py
 
 Capability
 
-- https://plotly.com/python/linear-fits/
-  - This has trendline calculation
-- Standard Curve
-  - Scatter Plot
-    - Add trendline
-    - Show equation
-    - Show R^2
+- Handling multiple groups
+  - Add dropdown to select group
+  - Show the selected group data in observation & observation scatter plots
 - Cumulative Release
   - Scatter Plot
+    - Need to check correctness for multiple groups with valid data
     - Time in hours on x-axis
     - percentage cumulative release on y-axis
     - Add trendline
     - Show equation
     - Show R^2
+- Fractional values - is it wrong in the calculated data ? Validate this.
+- Higuchi plot
+  - Don't focus on this, till the correctness of till now calculations are validated
+
+## References
+
+- trendline calculation - https://plotly.com/python/linear-fits/

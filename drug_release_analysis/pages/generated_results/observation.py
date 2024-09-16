@@ -36,7 +36,7 @@ def observation_page_run():
 def add_observation_action_buttons():
     col1, _ = st.columns([0.1, 0.9], vertical_alignment="bottom")
     with col1:
-        if st.button("Upload observation file"):
+        if st.button(label="Upload observation file", type="primary"):
             popup_upload_observation_file()
 
 

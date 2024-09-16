@@ -28,6 +28,10 @@ class DrugAbsorbanceObservation:
 
     def transform(self):
         data = self.original_data.rename(lowercase, axis="columns")
+        # if group_name is not present, add group_name column with default value G1
+        if "group_name" not in data.columns:
+            data["group_name"] = "G1"
+
         data = (
             data.groupby(["group_name", "time_in_hours", "dilution_factor"])[
                 ["absorbance"]

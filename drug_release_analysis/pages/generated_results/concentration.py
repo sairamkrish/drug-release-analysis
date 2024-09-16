@@ -30,14 +30,14 @@ def add_concentration_action_buttons():
         [0.1, 0.11, 0.1, 0.7], vertical_alignment="bottom"
     )
     with col1:
-        if st.button("Upload concentration file"):
+        if st.button("Upload concentration file", type="primary"):
             popup_upload_concentration_file()
     with col2:
-        if st.button("Update concentration settings"):
+        if st.button("Update concentration settings", type="primary"):
             popup_update_concentration_settings()
 
     with col3:
-        if st.button("Show trendline summary"):
+        if st.button("Show trendline summary", type="primary"):
             popup_concentration_trendline_summary()
 
 
