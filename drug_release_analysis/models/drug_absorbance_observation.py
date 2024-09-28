@@ -27,6 +27,12 @@ class DrugAbsorbanceObservation:
         )
 
     def transform(self):
+        if st.session_state.get("concentration_actual_load") is None:
+            # if there is a default value, set it here
+            # st.session_state["concentration_actual_load"] = 50.0
+            raise ValueError(
+                "concentration settings missing. actual_load is not set"
+            )
         data = self.original_data.rename(lowercase, axis="columns")
         # if group_name is not present, add group_name column with default value G1
         if "group_name" not in data.columns:
@@ -56,6 +62,7 @@ class DrugAbsorbanceObservation:
             )
 
         data["cumulative_drug_release"] = data["total_drug_release"].cumsum()
+
         data["cumulative_percentage"] = (
             data["cumulative_drug_release"] * 100
         ) / (st.session_state.concentration_actual_load * 1000)

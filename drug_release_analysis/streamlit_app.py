@@ -53,6 +53,11 @@ def render_single_page_app():
     # show_dev_tools()
     display_concentration_info()
     display_observation_info()
+    # version_number = "v0.1.0"
+    # st.markdown(
+    #     f'<div style="position: fixed; top: 0; left: 0;">{version_number}</div>',
+    #     unsafe_allow_html=True,
+    # )
 
 
 def show_dev_tools():

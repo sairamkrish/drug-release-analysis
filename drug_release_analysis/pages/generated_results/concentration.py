@@ -5,22 +5,28 @@ from drug_release_analysis.models.drug_concentration import (
 from drug_release_analysis.pages.input.data import create_model_from_file_upload
 
 
+def show_in_same_row(concentration: DrugConcentration):
+    col1, col2 = st.columns([0.3, 0.7], vertical_alignment="top")
+    with col1:
+        st.dataframe(concentration.transformed_data, hide_index=True)
+    with col2:
+        show_concentration_settings()
+    st.plotly_chart(concentration.trendline_fig, use_container_width=True)
+
+
+def show_in_multi_row(concentration: DrugConcentration):
+    st.dataframe(concentration.transformed_data, hide_index=True)
+    show_concentration_settings()
+    st.plotly_chart(concentration.trendline_fig, use_container_width=True)
+
+
 def concentration_page_run():
     st.subheader("Concentration data")
     add_concentration_action_buttons()
     if st.session_state.get("concentration"):
         concentration: DrugConcentration = st.session_state.concentration
-        col1, col2, col3, _ = st.columns(
-            [0.1, 0.1, 0.2, 0.6], vertical_alignment="bottom"
-        )
-        with col1:
-            st.dataframe(concentration.transformed_data, hide_index=True)
-        with col2:
-            show_concentration_settings()
-        with col3:
-            st.plotly_chart(
-                concentration.trendline_fig, use_container_width=True
-            )
+        show_in_same_row(concentration=concentration)
+        # show_in_multi_row(concentration)
     else:
         st.markdown("`No concentration data found`")
 
@@ -60,6 +66,8 @@ def show_concentration_settings():
         "Theoretical Load": st.session_state.get(
             "concentration_theoretical_load"
         ),
+        "From std curve": f"y = {st.session_state.concentration.coef_x1}x + {st.session_state.concentration.coef_const}",
+        "Concentration": f"x = (y - {st.session_state.concentration.coef_const}) / {st.session_state.concentration.coef_x1}",
     }
     st.table(settings)
 
